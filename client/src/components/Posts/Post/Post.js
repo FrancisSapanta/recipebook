@@ -1,8 +1,9 @@
 import React from "react";
-import {Card, CardActions, CardContent, CardMedia, Button, Typography, Tooltip, Dialog, DialogActions, DialogTitle} from '@material-ui/core';
+import {Card, CardActions, CardContent, CardMedia, Button, Typography, Tooltip, Dialog, DialogActions, DialogTitle, DialogContent, Paper  } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import CloseIcon from '@material-ui/icons/Close';
 import moment from 'moment';
 import useStyles from "./styles.js";
 import { useDispatch } from 'react-redux';
@@ -13,15 +14,14 @@ import { deletePost } from "../../../actions/posts";
 const Post = ( {post, setCurrentId} ) => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const [open, setOpen] = React.useState(false);
+    const [openDelete, setOpenDelete] = React.useState(false);
+    const [openView, setOpenView] = React.useState(false);
 
-    const handleClickOpen = () => {
-        setOpen(true);
-      };
+    const handleClickOpenDelete = () => {setOpenDelete(true)};
+    const handleCloseDelete = () => {setOpenDelete(false)};
     
-      const handleClose = () => {
-        setOpen(false);
-      };
+    const handleOpenView = () => setOpenView(true);
+    const handleCloseView = () => setOpenView(false);
 
     return (
        <Card className={classes.card}>
@@ -50,23 +50,51 @@ const Post = ( {post, setCurrentId} ) => {
             
             </CardContent>
             <CardActions className={classes.cardActions}> 
-                <Button size="small" color="primary" onClick={() => handleClickOpen()}>
+            {/* Delete */}
+                <Button size="small" color="primary" onClick={() => (handleClickOpenDelete())}>
                     <DeleteIcon fontSize="small" />
                     Delete
                 </Button>
-                <Dialog open={open} onClose={handleClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
+                <Dialog open={openDelete} onClose={handleCloseDelete} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
                     <DialogTitle id="alert-dialog-title">
-                        {"Are you sure you want to delete the Recipe?"}
+                        {"Are you sure you want to delete the recipe?"}
                     </DialogTitle>
                     <DialogActions> 
-                        <Button onClick={handleClose}>Cancel</Button>
+                        <Button onClick={handleCloseDelete}>Cancel</Button>
                         <Button onClick={() => dispatch(deletePost(post._id))}>Delete</Button>
-                    </DialogActions>
+                    </DialogActions >
                 </Dialog>
-                <Button color = 'primary' size="small" onClick={() => ({})}>
+
+                 {/* View Recipe */}
+                <Button color = 'primary' size="small" onClick={() => (handleOpenView())}>
                     <VisibilityIcon fontSize="medium" />
                     View
                 </Button>
+               
+                <Dialog PaperComponent={Paper} maxWidth={'sm'} fullWidth ={true} open={openView} onClose={handleCloseView} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
+                    <DialogTitle id="alert-dialog-title">
+                        {post.title}
+                    </DialogTitle>
+                    <DialogContent dividers>
+            <Typography gutterBottom>By: {post.creator}</Typography>
+            <Paper variant="outlined">
+            <img src={post.selectedFile} />
+            </Paper>
+          <Typography variant="h5">Ingredients</Typography>
+          <Typography  style={{whiteSpace: 'pre-line'}} gutterBottom variant="body2">{post.ingredients}</Typography>
+          <Typography variant="h5">Instructions</Typography>
+          <Typography  style={{whiteSpace: 'pre-line'}} gutterBottom variant="body2">{post.instructions}</Typography>
+          
+        </DialogContent>
+                    <DialogActions> 
+                        <Button onClick={handleCloseView}>
+                            <CloseIcon/>
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+                
+                
+
             </CardActions>
        </Card>
 
