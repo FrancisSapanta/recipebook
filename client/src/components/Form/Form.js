@@ -81,7 +81,7 @@ const Form = ({currentId, setCurrentId}) => {
             <TextField name="instructions" variant="outlined" label="Instructions" multiline fullWidth value={postData.instructions}onChange={(e) => setPostData({...postData, instructions: e.target.value })}
             />
 
-            <TextField name="tags" variant="outlined" label="Tags" fullWidth value={postData.tags}onChange={(e) => setPostData({...postData, tags: e.target.value })}
+            <TextField name="tags" variant="outlined" label="Tags" fullWidth value={postData.tags}onChange={(e) => setPostData({...postData, tags: e.target.value.split(',') })}
             />
 
             <div className={classes.fileInput}>
