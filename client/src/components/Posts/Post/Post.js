@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {Card, CardActions, CardContent, CardMedia, Button, Typography, Tooltip, Dialog, DialogActions, DialogTitle, DialogContent, Paper  } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
@@ -14,8 +14,8 @@ import { deletePost } from "../../../actions/posts";
 const Post = ( {post, setCurrentId} ) => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const [openDelete, setOpenDelete] = React.useState(false);
-    const [openView, setOpenView] = React.useState(false);
+    const [openDelete, setOpenDelete] = useState(false);
+    const [openView, setOpenView] = useState(false);
 
     const handleClickOpenDelete = () => {setOpenDelete(true)};
     const handleCloseDelete = () => {setOpenDelete(false)};
@@ -78,7 +78,7 @@ const Post = ( {post, setCurrentId} ) => {
                     <DialogContent dividers>
             <Typography gutterBottom>By: {post.creator}</Typography>
             <Paper variant="outlined">
-            <img src={post.selectedFile} />
+            <img src={post.selectedFile} alt=""/>
             </Paper>
           <Typography variant="h5">Ingredients</Typography>
           <Typography  style={{whiteSpace: 'pre-line'}} gutterBottom variant="body2">{post.ingredients}</Typography>
