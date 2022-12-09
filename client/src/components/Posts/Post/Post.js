@@ -12,6 +12,7 @@ import { deletePost } from "../../../actions/posts";
 
 //singular post
 const Post = ( {post, setCurrentId} ) => {
+    const user = JSON.parse(localStorage.getItem('profile'));
     const classes = useStyles();
     const dispatch = useDispatch();
     const [openDelete, setOpenDelete] = useState(false);
@@ -29,19 +30,20 @@ const Post = ( {post, setCurrentId} ) => {
             <div className={classes.overlay}>
                 <Typography variant="h5">{post.title}</Typography>
                 <Typography variant="body2">{moment(post.createdAt).fromNow()}</Typography>
-                <Typography variant="body2" gutterBottom>{post.creator}</Typography>
+                <Typography variant="body2" gutterBottom>{post.name}</Typography>
             </div>
 
             {/* edit button */}
-            <div className={classes.overlay2}>
+            {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator ) && ( 
+                <div className={classes.overlay2}>
                 <Tooltip title="Edit" arrow>
                     <Button style={{color: 'white'}} size="small" onClick={() => setCurrentId(post._id)}>
                         <MoreHorizIcon fontSize="medium" />
                     </Button>
                 </Tooltip>
             </div>
-
-
+            )}
+            
             <div className={classes.details}>
                 <Typography variant="body2" color="textSecondary">{post.tags.map((tag) => `#${tag} `)}</Typography>
 
@@ -51,11 +53,13 @@ const Post = ( {post, setCurrentId} ) => {
             </CardContent>
             <CardActions className={classes.cardActions}> 
             {/* Delete */}
-                <Button size="small" color="primary" onClick={() => (handleClickOpenDelete())}>
+            {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator ) && (
+                <Button size="small" color="primary" disabled={!user?.result} onClick={() => (handleClickOpenDelete())}>
                     <DeleteIcon fontSize="small" />
                     Delete
                 </Button>
-                <Dialog open={openDelete} onClose={handleCloseDelete} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
+            )}
+            <Dialog open={openDelete} onClose={handleCloseDelete} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
                     <DialogTitle id="alert-dialog-title">
                         {"Are you sure you want to delete the recipe?"}
                     </DialogTitle>
@@ -64,6 +68,7 @@ const Post = ( {post, setCurrentId} ) => {
                         <Button onClick={() => dispatch(deletePost(post._id))}>Delete</Button>
                     </DialogActions >
                 </Dialog>
+                
 
                  {/* View Recipe */}
                 <Button color = 'primary' size="small" onClick={() => (handleOpenView())}>
@@ -76,7 +81,7 @@ const Post = ( {post, setCurrentId} ) => {
                         {post.title}
                     </DialogTitle>
                     <DialogContent dividers>
-            <Typography gutterBottom>By: {post.creator}</Typography>
+            <Typography gutterBottom>By: {post.name}</Typography>
             <Paper variant="outlined">
             <img src={post.selectedFile} alt=""/>
             </Paper>

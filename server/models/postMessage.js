@@ -7,6 +7,7 @@ const postSchema =  mongoose.Schema({
     proteinPerServing: Number,
     instructions: String,
     creator: String,
+    name: String,
     tags: [String],
     selectedFile: String,
     createdAt: {

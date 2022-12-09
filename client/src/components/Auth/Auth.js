@@ -4,7 +4,6 @@ import { GoogleLogin } from 'react-google-login';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { gapi } from 'gapi-script';
-import dotenv from 'dotenv'
 
 import Icon from './icon';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -12,12 +11,11 @@ import useStyles from './styles';
 import Input from './Input';
 import { signin, signup } from '../../actions/auth';
 
-dotenv.config();
-
 const initalState =  { firstName: '', lastName: '', email: '', password: '', confirmPassword: '',};
 
 const Auth = () => {
-    const clientId = process.env.CLIENT_ID;
+    
+  const clientId = process.env.CLIENT_ID;
     useEffect(() =>{
       gapi.load("client:auth2", () => {
         gapi.auth2.init({clientId:clientId})
@@ -51,7 +49,7 @@ const Auth = () => {
 
     const switchForm = () => {
       setIsSignup((prevIsSignup) => !prevIsSignup);
-      handleShowPassword(false);
+      setShowPassword(false);
 
     };
 
