@@ -15,6 +15,7 @@ const initalState =  { firstName: '', lastName: '', email: '', password: '', con
 
 const Auth = () => {
     
+  
   const clientId = process.env.CLIENT_ID;
     useEffect(() =>{
       gapi.load("client:auth2", () => {

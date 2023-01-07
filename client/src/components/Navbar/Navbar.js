@@ -6,7 +6,7 @@ import * as actionType from '../../constants/actionTypes';
 import decode from 'jwt-decode';
 
 import useStyles from './styles';
-import recipebook from '../../images/recipe.jpg';
+import recipebook from '../../images/recipeLogo.png';
 
 const Navbar = () => {
     const classes = useStyles();
